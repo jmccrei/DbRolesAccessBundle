@@ -1,0 +1,42 @@
+parameters:
+  jmccrei_user_management:
+    login_route: app_login
+    referrer_redirect: true
+    successful_redirect_route: site_index
+    user_class: App\Entity\User
+    role_class: Jmccrei\UserManagement\Entity\SystemRole
+    access_class: Jmccrei\UserManagement\Entity\Access
+    invalid_credentials_message: Invalid security credentials supplied
+    mappings:
+      user:
+        roles:
+          cascade: [ 'persist' ]
+          inversedBy: users
+          joinTable:
+            name: ~
+            joinColumns:
+              - { name: user_id, referencedColumnName: id }
+            inverseJoinColumns:
+              - { name: role_id, referencedColumnName: id }
+      access:
+        roles:
+          cascade: [ ]
+          inversedBy: access
+          joinTable:
+            name: ~
+            joinColumns:
+              - { name: access_id, referencedColumnName: id }
+            inverseJoinColumns:
+              - { name: role_id, referencedColumnName: id }
+      role:
+        parent:
+          cascade: [ 'persist' ]
+          inversedBy: children
+        children:
+          mappedBy: parent
+        users:
+          cascade: [ 'persist' ]
+          mappedBy: systemRoles
+        access:
+          cascade: [ 'persist' ]
+          mappedBy: systemRoles

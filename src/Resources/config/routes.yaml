@@ -1,0 +1,3 @@
+jmccrei_user_management_bundle_routes:
+  type: annotation
+  resource: ../../Controller

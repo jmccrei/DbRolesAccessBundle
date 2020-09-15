@@ -1,0 +1,30 @@
+services:
+  _defaults:
+    bind:
+      $jmccreiUserManagementConfiguration: '%jmccrei_user_management%'
+
+  Jmccrei\UserManagement\:
+    resource: '../../*'
+    exclude: '../../{DependencyInjection,Entity,Migrations,Tests}'
+    autowire: true
+    autoconfigure: true
+
+  Jmccrei\UserManagement\Controller\:
+    resource: ../../Controller/
+    autowire: true
+    autoconfigure: true
+    tags: [ 'controller.service_arguments' ]
+
+  Jmccrei\UserManagement\EntitySubscriber\:
+    resource: ../../EntitySubscriber/
+    autowire: true
+    autoconfigure: true
+    tags:
+      - { name: 'doctrine.event_subscriber' }
+
+  Jmccrei\UserManagement\EventSubscriber\:
+    resource: ../../EventSubscriber
+    autowire: true
+    autoconfigure: true
+    tags:
+      - { name: kernel.event_listener }
